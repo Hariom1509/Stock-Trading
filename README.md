@@ -1,3 +1,3 @@
 # Stock Trading Web App
 
-## Built Flask and database using PostgreSQL
+## Built using Flask and PostgreSQL
