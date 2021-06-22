@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<form  action="" method="post" class="form-horizontal">
+	{{c_form.hidden_tag()}}	
+	<div class="form-group">
+    	<legend class="border-bottom mb-4">Commission Info</legend>
+        <div>
+        	<input id="commission_type_p" name="commission_type_p" type="checkbox" value="p">
+        	<label class="form-control-label">At what percentage? </label>
+        		{% if c_form.percentage.errors %}
+                    {{ c_form.percentage(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in c_form.percentage.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+        			{{c_form.percentage(class="btn btn-outline-info" , placeholder = '%', value = 0)}}
+                {% endif %}
+        </div><br>
+       	<div>
+       		<input id="commission_type_f" name="commission_type_f" type="checkbox" value="f">
+        	<label class="form-control-label">At what fixed rate? </label>
+        	    {% if c_form.fixed.errors %}
+                    {{ c_form.fixed(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in c_form.fixed.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+        			{{c_form.fixed(class="btn btn-outline-info" , placeholder = '$', value = 0)}}
+                {% endif %}   	
+        </div><br>
+		<div class="form-group">
+			{{c_form.update(class="btn btn-outline-info")}}
+		</div>
+
+	</div>
+</form>
+
+{% endblock content %}

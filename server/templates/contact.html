@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+<div clas = 'container'>
+	<form  action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+		 {{ form.hidden_tag() }}
+		<fieldset>
+			<legend class="border-bottom mb-4">Portfolio Info</legend>
+			<div class="form-group">
+				<label class="form-control-label">You have currently {{myAccount.money}} cash</label>  
+				<div>
+					<label class="form-control-label">Type in a new Username</label>  
+				</div>
+				{% if formAccount.money.errors %}
+					{{ formAccount.money(class="form-control form-control-lg is-invalid") }}
+					<div class="invalid-feedback">
+                        {% for error in formAccount.money.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+				{% else %}
+				  	<div class="col-md-4">
+				  		{{formAccount.money(class="form-control form-control-lg")}}
+				 	</div>
+				 {% endif %}
+			</div>
+            <div class="form-group">
+				{{form.update(class="btn btn-outline-info")}}
+			</div>
+		</fieldset>
+	</form>
+</div>
+{% endblock content %}

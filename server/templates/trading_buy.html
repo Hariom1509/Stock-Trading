@@ -1,0 +1,152 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+  <h2>Portfolio</h2> 
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Accounts</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Cash</td>
+        <td>$ {{ rounded_account[0]}}</td>
+      </tr>
+      <tr>
+        <td>Stocks</td>
+        <td>$ {{rounded_account[1]}}</td>
+      </tr>
+      <tr>
+        <td>Commission</td>
+        {%if account.commission_type == True %}
+            <td>{{account.commission}} %<td>
+        {%else%}
+            <td>$ {{account.commission}}<td>
+        {% endif %}
+      </tr>
+    <thead>
+      <tr>
+        <th>Total</th>
+        <th>$ {{rounded_account[2]}}</th>
+      </tr>
+    </thead>
+    </tbody>
+  </table>
+</div>
+
+
+<div class="container">
+<h2>Stock Portfolio</h2>
+<input type="text" id="myInput" onkeyup="myFunction()" title="Type in a name">
+</div>
+
+<div class="container">
+<table id="myTable" class = "table">
+  <tr class="header">
+    <th style="width:25%;">Name</th>
+    <th style="width:25%;">Price</th>
+    <th style="width:25%;">Quantity</th>
+    <th style="width:25%;">Value</th>
+  </tr>
+  {% for each in asset %}
+    <tr>
+      <td>{{each.stock}}</td>
+      <td>${{each.price}}</td>
+      <td>{{each.quantity}}</td>
+      <td>${{rounded_stock_value[each.stock]}}</td>   
+    </tr>
+  {% endfor %}
+</table>
+</div>
+
+<div class = "container">
+    <form  action="" method="post" class="form-horizontal">
+        {{form.hidden_tag()}}
+        <div class="card shopping-cart">
+            <div class="card-header bg-dark text-light">
+                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                Buy order
+                <a href="{{url_for('research')}}" class="btn btn-outline-info btn-sm pull-right">Go back to searching</a>
+                <div class="clearfix"></div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-2 text-center">
+                            <img class="img-responsive" src="http://placehold.it/120x80" alt="prewiew" width="120" height="80">
+                    </div>
+                    <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-3">
+                        <h4><strong>Stock Code</strong></h4>
+                        {% if form.stock.errors %}
+                            {{ form.stock(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.stock.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <input id="stock" name="stock" required type="text" class="form-control form-control-lg" size=32
+                            value = {{form.stock.data}}>
+                        {% endif %}
+                    </div>
+                    <div  class="col-12 text-sm-center col-sm-12 text-md-left col-md-3">          
+                        <h4><strong>Price</strong></h4>
+                        {% if form.price.errors %}
+                            {{ form.price(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.price.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.price(class="form-control form-control-lg", size = 32) }}
+                        {% endif %}
+                    </div>
+                    <div class="col-12 col-sm-12 text-sm-center col-md-3 text-md-right row">     
+                    	<h4><strong>Quantity</strong></h4>
+                        {% if form.quantity.errors %}
+                            {{ form.quantity(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.quantity.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.quantity(class="form-control form-control-lg", size = 32) }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+	        <div class="pull-right" style="margin: 10px">
+	            {{form.buy(class="btn btn-success pull-right")}}
+	            <div class="pull-right" style="margin: 5px">
+	                Total price: <b>$</b>
+	            </div>
+	        </div>
+        </div>
+    </form>
+</div>
+<script>
+function myFunction() {
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+
+</script>
+
+
+{% endblock content %}

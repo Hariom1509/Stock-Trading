@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+{% block content %}	
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+
+<div class="container">
+	<div class="media">
+        <img class="rounded-circle account-img" src="{{ image_file }}">
+        <div class="media-body">
+          <h2 class="account-heading">{{ current_user.username }}</h2>
+          <p class="text-secondary">{{ current_user.email }}</p>
+    	</div>
+    </div>	
+
+	<form  action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+		{{ form.hidden_tag() }}
+		<fieldset>
+			<legend class="border-bottom mb-4">Account Info</legend>
+			<div class="form-group">
+				<label class="form-control-label">Your current Username is {{current_user.username}}</label>  
+				<div>
+					<label class="form-control-label">Type in a new Username</label>  
+				</div>
+				{% if form.username.errors %}
+					{{ form.username(class="form-control form-control-lg is-invalid") }}
+					<div class="invalid-feedback">
+                        {% for error in form.username.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+				{% else %}
+				  	<div class="col-md-4">
+				  		{{form.username(class="form-control form-control-lg")}}
+				 	</div>
+				 {% endif %}
+			</div>
+				<div class="form-group">
+				<label class="form-control-label">Your current Email is {{current_user.email}}</label>  
+				<div>
+					<label class="form-control-label" >Type in a new Email</label>  
+				</div>
+			  	{% if form.email.errors %}
+					{{ form.email(class="form-control form-control-lg is-invalid") }}
+					<div class="invalid-feedback">
+                        {% for error in form.email.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+				{% else %}
+				  	<div class="col-md-4">
+			  			{{form.email(class="form-control form-control-lg")}}
+			 		</div>
+				{% endif %}
+			</div>
+			 <div class="form-group">
+                {{ form.picture.label() }}
+                {{ form.picture(class="form-control-file") }}
+                {% if form.picture.errors %}
+                    {% for error in form.picture.errors %}
+                        <span class="text-danger">{{ error }}</span></br>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group">
+				{{form.update(class="btn btn-outline-info")}}
+			</div>
+		</fieldset>
+	</form>
+
+</div>   
+{% endblock content %}

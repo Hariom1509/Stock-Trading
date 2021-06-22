@@ -1,0 +1,147 @@
+{% extends "layout.html" %}
+{% block content %}
+
+
+<h1 id = 'account_h1'> Welcome {{current_user.username}} </h1><br>
+<div class="container">
+  <h2>Portfolio</h2> 
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Accounts</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Cash</td>
+        <td>$ {{ rounded_account[0]}}</td>
+      </tr>
+      <tr>
+        <td>Stocks</td>
+        <td>$ {{rounded_account[1]}}</td>
+      </tr>
+      <tr>
+        <td>Commission</td>
+        {%if account.commission_type == True %}
+            <td>{{account.commission}} %<td>
+        {%else%}
+            <td>$ {{account.commission}}<td>
+        {% endif %}
+      </tr>
+    <thead>
+      <tr>
+        <th>Total</th>
+        <th>$ {{rounded_account[2]}}</th>
+      </tr>
+    </thead>
+    </tbody>
+  </table>
+</div>
+
+
+<div class="container">
+<h2>Stock Portfolio</h2>
+<input type="text" id="myInput" onkeyup="myFunction()" title="Type in a name", placeholder="Filter by stocks">
+</div>
+
+<div class="container">
+<table id="myTable" class = "table">
+  <tr class="header">
+    <th style="width:25%;">Name</th>
+    <th style="width:25%;">Price</th>
+    <th style="width:25%;">Quantity</th>
+    <th style="width:25%;">Value</th>
+  </tr>
+  {% for each in asset %}
+    <tr>
+      <td>{{each.stock}}</td>
+      <td>${{each.price}}</td>
+      <td>{{each.quantity}}</td>
+      <td>${{rounded_stock_value[each.stock]}}</td>   
+    </tr>
+  {% endfor %}
+</table>
+</div>
+
+<div class="container">
+<h2>Transaction History</h2>
+<input type="text" id="myInput1" onkeyup="myFunction1()" placeholder="Filter by stocks" title="Type in a name">
+</div>
+
+<div class="container">
+<table id="myTable1" class = "table">
+  <tr class="header">
+    <th style="width:10%;">Name</th>
+    <th style="width:10%;">Position</th>
+    <th style="width:13%;">Quantity</th>
+    <th style="width:13%;">Price</th>
+    <th style="width:15%;">Commission</th>
+    <th style="width:20%;">Total</th>
+    <th style="width:30%;">Time</th>
+  </tr>
+  {% for each in transaction_history %}
+    <tr>
+      <td>{{each.stock}}</td>
+      {%if each.position == 1%}
+        <td>Buy</td>
+      {%else%}
+        <td>Sell</td>
+      {%endif%}
+      <td>{{each.quantity}}</td>
+      <td>$ {{each.price}}</td> 
+      <td>$ {{each.commission}}</td> 
+      <td>$ {{each.total}}</td> 
+      <td>{{each.time.strftime("%m/%d/%y %H:%M:%S") }}</td>   
+    </tr>
+  {% endfor %}
+</table>
+</div>
+<div>
+<a href="{{url_for('account_restart')}}">Restart your portfolio</a><br>
+</div>
+
+
+<script>
+function myFunction() {
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+function myFunction1() {
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("myInput1");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable1");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+</script>
+
+
+
+</body>
+</html>
+
+{% endblock content %}
